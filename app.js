@@ -1,0 +1,1 @@
+console.log("210110 JavaScript 학습 시작");

@@ -2,10 +2,11 @@ const toDoForm  = document.getElementById("todo-form");
 const toDoInput = toDoForm.querySelector("input");
 const todoList  = document.getElementById("todo-list");
 
-const toDos = [];
+const TODOS_KEY = "todos";
+let toDos = [];
 
 function saveToDos(){
-    localStorage.setItem("todos", JSON.stringify(toDos));   // 브라우저의 저장소에 입력값을 string형으로 저장
+    localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));   // 브라우저의 저장소에 입력값을 string형으로 저장
 }
 
 function deleteToDo(event){
@@ -35,3 +36,11 @@ function handleToDoSubmit(event){
 }
 
 toDoForm.addEventListener("submit", handleToDoSubmit);
+
+const savedTodos = localStorage.getItem(TODOS_KEY);
+
+if(savedTodos !== null){
+    const parsedToDos = JSON.parse(savedTodos);     // To Do List 를 배열 형태로 저장
+    toDos = parsedToDos;
+    parsedToDos.forEach(paintToDo);                 // 배열의 각 item에 대해 함수를 실행
+}

@@ -10,14 +10,17 @@ function saveToDos(){
 }
 
 function deleteToDo(event){
-    const li = event.target.parentElement;          // 삭제하고자 하는 li요소 저장
+    const li = event.target.parentElement;                      // 삭제하고자 하는 li요소 저장
     li.remove();
+    toDos = toDos.filter(toDo => toDo.id !== parseInt(li.id));  // toDos 배열 안의 요소 업데이트
+    saveToDos();
 }
 
 function paintToDo(newTodo){
     const li    = document.createElement("li");     // li태그 요소 생성
+    li.id = newTodo.id;
     const span  = document.createElement("span");   // span태그 요소 생성
-    span.innerText = newTodo;                       // 입력한 to do 를 span태그에 나타내기
+    span.innerText = newTodo.text;                       // 입력한 to do 를 span태그에 나타내기
     const button = document.createElement("button");
     button.innerText = "❌";
     button.addEventListener("click", deleteToDo);
@@ -29,9 +32,13 @@ function paintToDo(newTodo){
 function handleToDoSubmit(event){
     event.preventDefault();                         // 브라우저 기본 동작(새로고침) 막기
     const newTodo = toDoInput.value;               
-    toDoInput.value = "";   
-    toDos.push(newTodo);                   
-    paintToDo(newTodo);
+    toDoInput.value = ""; 
+    const newTodoObj = {
+        text: newTodo,
+        id: Date.now(),
+    }; 
+    toDos.push(newTodoObj);                   
+    paintToDo(newTodoObj);
     saveToDos();    
 }
 
@@ -44,3 +51,4 @@ if(savedTodos !== null){
     toDos = parsedToDos;
     parsedToDos.forEach(paintToDo);                 // 배열의 각 item에 대해 함수를 실행
 }
+
